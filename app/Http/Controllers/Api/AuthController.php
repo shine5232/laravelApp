@@ -372,9 +372,55 @@ class AuthController extends Controller{
         return json_encode($this->ret);
     }
     /**
+     * 获取语音合成token
+     */
+    public function getTtsToken(){
+        $url = $this->baseApiHost.'/getTtsToken.php';
+        $result = curl_request($url);
+        $result_array = json_decode($result, true);
+        if ($result_array['code'] == 0) {
+            return $result_array['data']['access_token'];
+        } else {
+            return false;
+        }
+    }
+    /**
      * 在线语音合成
      */
     public function tts(Request $request){
-
+        $access_token = $this->getTtsToken();
+        $userId = $request->post('openid');
+        if(!$access_token){
+            $this->ret['code'] = 1000;
+            $this->ret['msg'] = 'access_token fail';
+            return json_encode($this->ret);
+        }
+        $data = array(
+            'voice_name' => $request->post('voiceName'),
+            'text'  =>  $request->post('text'),
+            'speed' => $request->post('speed'),
+            'volume' => $request->post('volume'),
+            'language' => 'zh',
+            'domain' => 1,
+            'access_token' => $access_token,
+        );
+        $url = 'https://openapi.data-baker.com/tts?access_token='.$data['access_token'].'&voice_name='.$data['voice_name'].'&text='.$data['text'].'&speed='.$data['speed'].'&volume='.$data['volume'].'&language='.$data['language'].'&domain='.$data['domain'];
+        $result = curl_request($url);
+        $result_array = json_decode($result, true);
+        if($result_array && $result_array['err_no']){
+            $this->ret['code'] = $result_array['err_no'];
+            $this->ret['msg'] = $result_array['err_msg'];
+        }else{
+            $fileName = $userId.'_tts_'.time().'.mp3';
+            $res = Storage::disk('vioce')->put($fileName,$result);
+            if($res){
+                $this->ret['data'] = array(
+                    'ossUrl' => 'https://'.$_SERVER["HTTP_HOST"]."/vioce/".date('Ymd').'/'.$fileName,
+                );
+            }else{
+                $this->ret['code'] = 1000;
+            }
+        }
+        return json_encode($this->ret);
     }
 }
