@@ -133,19 +133,13 @@ class AuthController extends Controller{
      * 小程序获取access_token
      */
     public function getAccessToken($openid){
-        $accessToken = Cache::get($openid . '_AccessToken');
-        if($accessToken){
-            return $accessToken;
-        }else{
-            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->appid . '&secret=' . $this->secret;
-            $result = curl_request($url);
-            $result_array = json_decode($result, true);
-            if (!isset($result_array['errcode'])) {
-                Cache::put($openid . '_AccessToken', $result_array['access_token'],$result_array['expires_in']);
-                return $result_array['access_token'];
-            } else {
-                return false;
-            }
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->appid . '&secret=' . $this->secret;
+        $result = curl_request($url);
+        $result_array = json_decode($result, true);
+        if (!isset($result_array['errcode'])) {
+            return $result_array['access_token'];
+        } else {
+            return false;
         }
     }
     /**
@@ -313,45 +307,32 @@ class AuthController extends Controller{
         $data = array(
         [
             'scene' => array(
-                'name' => '智能客服',
+                'name' => '普通合成',
                 'voice' => array(
                     [
-                        'name' => '君君',
-                        'code' => 'Junjun',
+                        'aliasName' => '娇娇',
+                        'code' => 'Jiaojiao',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
+                        'id' => 1,
                         'type' => 0,
-                        'language' => '支持纯中文'
+                        'language' => '支持纯中文',
+                        'defaultText' => '您好，我们是中国电信的，请问是张三先生吗？'
                     ],[
-                        'name' => '静静',
-                        'code' => 'Jingjing',
-                        'type' => 0,
-                        'language' => '支持中文及中英文混合场景'
-                    ],[
-                        'name' => '小金',
-                        'code' => 'Xiaojin',
+                        'aliasName' => '天天',
+                        'code' => 'Tiantian',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/tiantian@2x.png',
+                        'id' => 2,
                         'type' => 1,
-                        'language' => '支持纯中文'
-                    ]
-                )
-            )
-        ],[
-            'scene' => array(
-                'name' => '标准合成',
-                'voice' => array(
-                    [
-                        'name' => '楠楠',
-                        'code' => 'Nannan',
-                        'type' => 0,
-                        'language' => '支持中文及中英文混合场景'
+                        'language' => '支持纯中文',
+                        'defaultText' => '您好，亲，能不能方便说一下您的身高、体重及年龄？'
                     ],[
-                        'name' => '阿科',
-                        'code' => 'Ake',
-                        'type' => 1,
-                        'language' => '支持纯中文'
-                    ],[
-                        'name' => '瑶瑶',
-                        'code' => 'Yaoyao',
-                        'type' => 0,
-                        'language' => '支持中文及中英文混合场景'
+                        'aliasName' => '果子',
+                        'code' => 'Guozi',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
+                        'id' => 3,
+                        'type' => 2,
+                        'language' => '支持纯中文',
+                        'defaultText' => '三月下旬，南方正是梅雨季节，天空总是灰蒙蒙的一片。'
                     ]
                 )
             )
@@ -360,15 +341,29 @@ class AuthController extends Controller{
                 'name' => '新闻播报',
                 'voice' => array(
                     [
-                        'name' => '蓉蓉',
-                        'code' => 'Rongrong',
+                        'aliasName' => '露露',
+                        'code' => 'Jiaojiao',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
+                        'id' => 1,
                         'type' => 0,
-                        'language' => '支持中文及中英文混合场景'
+                        'language' => '支持纯中文',
+                        'defaultText' => '随着多个国家和地区代表团陆续抵达日本...'
                     ],[
-                        'name' => '天天',
+                        'aliasName' => '妮妮',
                         'code' => 'Tiantian',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/tiantian@2x.png',
+                        'id' => 2,
                         'type' => 1,
-                        'language' => '支持中文及中英文混合场景'
+                        'language' => '支持纯中文',
+                        'defaultText' => '据日本共同社报道，在日本...'
+                    ],[
+                        'aliasName' => '金子',
+                        'code' => 'Guozi',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
+                        'id' => 3,
+                        'type' => 2,
+                        'language' => '支持纯中文',
+                        'defaultText' => '巴黎圣母院从当地时间十五日傍晚燃起大火...'
                     ]
                 )
             )
