@@ -341,29 +341,21 @@ class AuthController extends Controller{
                 'name' => '新闻播报',
                 'voice' => array(
                     [
-                        'aliasName' => '露露',
-                        'code' => 'Jiaojiao',
-                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
+                        'aliasName' => '阿科',
+                        'code' => 'Ake',
+                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/tiantian@2x.png',
                         'id' => 1,
-                        'type' => 0,
+                        'type' => 1,
                         'language' => '支持纯中文',
                         'defaultText' => '随着多个国家和地区代表团陆续抵达日本...'
                     ],[
-                        'aliasName' => '妮妮',
-                        'code' => 'Tiantian',
+                        'aliasName' => '小金',
+                        'code' => 'Xiaojin',
                         'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/tiantian@2x.png',
                         'id' => 2,
                         'type' => 1,
                         'language' => '支持纯中文',
                         'defaultText' => '据日本共同社报道，在日本...'
-                    ],[
-                        'aliasName' => '金子',
-                        'code' => 'Guozi',
-                        'imageUrl' => 'https://h5demo.tts168.com.cn/res/static/vc/jingjing@2x.png',
-                        'id' => 3,
-                        'type' => 2,
-                        'language' => '支持纯中文',
-                        'defaultText' => '巴黎圣母院从当地时间十五日傍晚燃起大火...'
                     ]
                 )
             )

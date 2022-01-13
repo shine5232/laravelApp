@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Api\SocketController;
+use App\Http\Controllers\Api\RecordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,4 +31,5 @@ Route::group(['namespace' => 'Api'], function (){
     Route::post('/upload/vioceFile',[UploadController::class,'vioceFile']);
     Route::post('/upload/getUploadFile',[UploadController::class,'getUploadFile']);
     Route::post('/socket/vioceChange',[SocketController::class,'vioceChange']);
+    Route::post('/record/login',[RecordController::class,'login']);
 });
