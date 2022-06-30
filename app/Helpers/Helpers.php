@@ -102,9 +102,9 @@ if (!function_exists("mergeWavFile")) {
     function mergeWavFile($originFiles, $newFile)
     {
         $filePath  = fopen($newFile, 'a+');
-        foreach($originFiles as $v){
-            $cacheFile = fopen(storage_path().$v, 'rb');
-            $content   = fread($cacheFile, filesize(storage_path().$v));
+        foreach ($originFiles as $v) {
+            $cacheFile = fopen(storage_path() . $v, 'rb');
+            $content   = fread($cacheFile, filesize(storage_path() . $v));
             fwrite($filePath, $content);
             fclose($cacheFile);
         }
@@ -114,26 +114,28 @@ if (!function_exists("mergeWavFile")) {
 /**
  * 处理微信用户头像为圆形
  */
-if(!function_exists("wxAvatarCircle")){
-    function wxAvatarCircle($original_path,$openid){
-        $w = 132;  $h=132; // original size  微信默认头像大小 高132,宽132
-        $path = '/file/'.date('Ymd');
-        $file_path = storage_path().$path;
-        $dest_path = $file_path.'/'.$openid.'_circle.png';
+if (!function_exists("wxAvatarCircle")) {
+    function wxAvatarCircle($original_path, $openid)
+    {
+        $w = 132;
+        $h = 132; // original size  微信默认头像大小 高132,宽132
+        $path = '/file/' . date('Ymd');
+        $file_path = storage_path() . $path;
+        $dest_path = $file_path . '/' . $openid . '_circle.png';
         $src = imagecreatefromstring(file_get_contents($original_path));
-        $newpic = imagecreatetruecolor($w,$h);
-        imagealphablending($newpic,false);
+        $newpic = imagecreatetruecolor($w, $h);
+        imagealphablending($newpic, false);
         $transparent = imagecolorallocatealpha($newpic, 0, 0, 0, 127);
-        $r=$w/2;
-        for($x=0;$x<$w;$x++){
-            for($y=0;$y<$h;$y++){
-                $c = imagecolorat($src,$x,$y);
-                $_x = $x - $w/2;
-                $_y = $y - $h/2;
-                if((($_x*$_x) + ($_y*$_y)) < ($r*$r)){
-                    imagesetpixel($newpic,$x,$y,$c);
-                }else{
-                    imagesetpixel($newpic,$x,$y,$transparent);
+        $r = $w / 2;
+        for ($x = 0; $x < $w; $x++) {
+            for ($y = 0; $y < $h; $y++) {
+                $c = imagecolorat($src, $x, $y);
+                $_x = $x - $w / 2;
+                $_y = $y - $h / 2;
+                if ((($_x * $_x) + ($_y * $_y)) < ($r * $r)) {
+                    imagesetpixel($newpic, $x, $y, $c);
+                } else {
+                    imagesetpixel($newpic, $x, $y, $transparent);
                 }
             }
         }
@@ -147,8 +149,9 @@ if(!function_exists("wxAvatarCircle")){
 /**
  * 中文字符串转换为unicode编码
  */
-if(!function_exists("toUnicode")){
-    function toUnicode($string){
+if (!function_exists("toUnicode")) {
+    function toUnicode($string)
+    {
         $str = mb_convert_encoding($string, 'UCS-2', 'UTF-8');
         $arrstr = str_split($str, 2);
         $unistr = '';
@@ -157,5 +160,32 @@ if(!function_exists("toUnicode")){
             $unistr .= '&#' . $dec . ';';
         }
         return $unistr;
+    }
+}
+/**
+ *验证手机号的合法性
+ *@param $phone 用户手机号
+ *@retrun  Boolean 
+ */
+if(!function_exists("isMobile")){
+    function isMobile($phone){
+        if(preg_match('/^1[345789]\d{9}$/ims',$phone)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+/**
+ *设置登录token  唯一性
+ *@param $phone 用户手机号
+ *@retrun  String 
+ */
+if (!function_exists("setToken")) {
+    function setToken($phone)
+    {
+        $str = md5(uniqid(md5(microtime(true)), true));
+        $token = sha1($str . $phone);
+        return $token;
     }
 }

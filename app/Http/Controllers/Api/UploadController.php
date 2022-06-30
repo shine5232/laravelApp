@@ -8,17 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
-    protected $ret = array(
-        'code' => 200,
-        'data' => array(),
-        'msg' => 'ok'
-    );
     /**
      * 上传音频文件
      */
     public function vioceFile(Request $request){
         $userId = $request->post('userId');
-        $file = $request->file('file');
+        $file = $request->file('clientFile');
         //获取文件的扩展名
         $ext = $file->getClientOriginalExtension();
         //获取文件的绝对路径

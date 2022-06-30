@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Api\SocketController;
 use App\Http\Controllers\Api\RecordController;
+use App\Http\Controllers\Api\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,4 +33,14 @@ Route::group(['namespace' => 'Api'], function (){
     Route::post('/upload/getUploadFile',[UploadController::class,'getUploadFile']);
     Route::post('/socket/vioceChange',[SocketController::class,'vioceChange']);
     Route::post('/record/login',[RecordController::class,'login']);
+    Route::post('/user/login',[UserController::class,'login']);
+    Route::post('/user/regist',[UserController::class,'regist']);
+    Route::post('/user/outLogin',[UserController::class,'outLogin']);
+});
+/**
+ * 需要检查token的路由组
+ */
+Route::group(['middleware' => 'checktoken'], function (){
+    Route::post('/user/getUserInfo',[UserController::class,'getUserInfo']);
+    Route::post('/user/updatePassword',[UserController::class,'updatePassword']);
 });
