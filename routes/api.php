@@ -27,6 +27,7 @@ Route::group(['namespace' => 'Api'], function (){
     Route::post('/auth/ttsPersonal' , [AuthController::class , 'ttsPersonal']);
     Route::post('/auth/getVoicePersonLis' , [AuthController::class , 'getVoicePersonLis']);
     Route::post('/auth/tts' , [AuthController::class , 'tts']);
+    Route::post('/auth/checkContent' , [AuthController::class , 'checkContent']);
     Route::post('/auth/submitModel' , [AuthController::class , 'submitModel']);
     Route::post('/auth/getUserInfo' , [AuthController::class , 'getUserInfo']);
     Route::post('/upload/vioceFile',[UploadController::class,'vioceFile']);

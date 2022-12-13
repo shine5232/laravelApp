@@ -132,7 +132,7 @@ class AuthController extends Controller{
     /**
      * 小程序获取access_token
      */
-    public function getAccessToken($openid){
+    public function getAccessToken(){
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->appid . '&secret=' . $this->secret;
         $result = curl_request($url);
         $result_array = json_decode($result, true);
@@ -219,6 +219,37 @@ class AuthController extends Controller{
         }
         return json_encode($this->ret);
     }
+    
+    /**
+     * 小程序校验内容安全性 
+     */
+    public function checkContent(Request $request){
+        $access_token = $this->getAccessToken();
+        $content = $request->post('content');
+        $openid = $request->post('openid');
+        $url = 'https://api.weixin.qq.com/wxa/msg_sec_check?access_token='.$access_token;
+        $data = array(
+            'content' => $content,
+            'openid' => $openid,
+            'version' => 2,
+            'scene'=>2,
+        );
+        $result = curl_request($url,json_encode($data),'POST',array('content-type: application/json'));
+        $result_array = json_decode($result, true);
+        if (!$result_array) {
+            $this->ret['code'] = 100;
+            $this->ret['data'] = '请求失败';
+            $this->ret['msg'] = 'fail';
+        } else {
+            if($result_array['errcode'] == 0 && $result_array['result']['suggest'] == 'pass'){
+                $this->ret['data'] = 'pass';
+            }else{
+                $this->ret['data'] = '内容含有敏感或违规信息';
+                $this->ret['msg'] = 'fail';
+            }
+        }
+        return json_encode($this->ret);
+    }
     /**
      * 个人小程序码
      */
@@ -231,7 +262,7 @@ class AuthController extends Controller{
             $this->ret['msg'] = '缺少参数openid|avatar';
             return json_encode($this->ret);
         }
-        $accessToken = $this->getAccessToken($openid);
+        $accessToken = $this->getAccessToken();
         $url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $accessToken;
         $data = array(
             'scene' => $openid,
