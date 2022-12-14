@@ -11,7 +11,6 @@ use Intervention\Image\Facades\Image;
 
 class AuthController extends Controller{
     protected $appid = 'wx50e36d93a1849688';//小程序appid
-    protected $secret = '1ae7be35055aba992c748003cde1f882';//小程序秘钥
     protected $baseApiHost = 'https://h5demo.tts168.com.cn/wxapi';//项目接口请求地址
     /* protected $ret = array(
         'code' => 200,
